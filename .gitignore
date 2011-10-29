@@ -1,0 +1,12 @@
+*.egg-info
+*.egg
+*.jar
+*.tar.gz
+*.zip
+*.pyc
+*.log
+*.log.lck
+.settings
+__version__.py
+nosetests.xml
+.coverage
