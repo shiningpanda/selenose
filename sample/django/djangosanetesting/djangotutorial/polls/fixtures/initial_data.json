@@ -1,0 +1,28 @@
+[
+    {
+        "pk": 1,
+        "model": "polls.poll",
+        "fields": {
+            "pub_date": "2011-10-24 20:06:52",
+            "question": "How is SeleniumServer?"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "polls.choice",
+        "fields": {
+            "votes": 0,
+            "poll": 1,
+            "choice": "Cool?"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "polls.choice",
+        "fields": {
+            "votes": 0,
+            "poll": 1,
+            "choice": "Super cool?"
+        }
+    }
+]
