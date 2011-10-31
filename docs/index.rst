@@ -6,7 +6,7 @@
 SeleniumServer
 ==============
 
-SeleniumServer is a plugin for `nose <http://code.google.com/p/python-nose/>`_. This plugin starts a `Selenium Server <http://seleniumhq.org/docs/05_selenium_rc.html#selenium-server>`_ before running tests, and stops it at the end of the tests.
+SeleniumServer is a plugin for `nose <http://code.google.com/p/python-nose/>`_ developed by `ShiningPanda <https://www.shiningpanda.com>`_. This plugin starts a `Selenium Server <http://seleniumhq.org/docs/05_selenium_rc.html#selenium-server>`_ before running tests, and stops it at the end of the tests.
 
 Installation
 ------------
