@@ -1,5 +1,9 @@
 #-*- coding: utf-8 -*-
-import urllib2
+try:
+    from urllib.error import URLError
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import URLError, urlopen
 
 from nose import plugins, config
 
@@ -103,6 +107,6 @@ class SeleniumDriverPlugin(plugins.Plugin):
                 # Quit
                 test.context.driver.quit()
             # Ignore error if quit already
-            except urllib2.URLError: pass
+            except URLError: pass
             # Reset
             test.context.driver = None

@@ -2,7 +2,11 @@
 import os
 import sys
 import glob
-import urllib2
+
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
 
 def selenium_server_bn(version):
     '''
@@ -65,7 +69,7 @@ def download(version, force=False):
         # Be able to delete the file if something does wrong
         try:
             # Download the file
-            fd.write(urllib2.urlopen(url).read())
+            fd.write(urlopen(url).read())
         # Something goes wrong, cleanup
         except Exception as e:
             # Close the file descriptor
