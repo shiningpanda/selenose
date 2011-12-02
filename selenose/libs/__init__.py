@@ -4,8 +4,6 @@ import sys
 import glob
 import urllib2
 
-from selenose.__version__ import __version__
-
 def selenium_server_bn(version):
     '''
     Get the SELENIUM server jar name.
@@ -18,10 +16,17 @@ def selenium_server_url(version):
     '''
     return 'http://selenium.googlecode.com/files/%s' % selenium_server_bn(version)
 
-def selenium_server_path(version=__version__):
+def selenium_server_path(version=None):
     '''
     Get the SELENIUM server jar path.
     '''
+    # Check if version is specified
+    if version is None:
+        # Get the version
+        from selenose.__version__ import __version__
+        # Copy the version
+        version = __version__
+    # Get the path
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), selenium_server_bn(version))
 
 def clean(version, full=False):
