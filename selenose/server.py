@@ -71,7 +71,7 @@ class Server(object):
             # Check when the server is started (wait at most 60 seconds)
             self.process.expect('Started org.openqa.jetty.jetty.Server', timeout=60)
         # Server failed to start
-        except pexpect.TIMEOUT, e:
+        except pexpect.TIMEOUT as e:
             # Stop it
             self.stop()
             # And re raise the exception

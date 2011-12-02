@@ -67,7 +67,7 @@ def download(version, force=False):
             # Download the file
             fd.write(urllib2.urlopen(url).read())
         # Something goes wrong, cleanup
-        except Exception, e:
+        except Exception as e:
             # Close the file descriptor
             fd.close()
             # Delete the partial file
