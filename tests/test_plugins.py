@@ -7,7 +7,7 @@ from nose.plugins import PluginTester
 
 from selenose.plugins import SeleniumServerPlugin
 
-class PluginTestCase(PluginTester, unittest.TestCase):
+class SeleniumServerPluginTestCase(PluginTester, unittest.TestCase):
     
     activate = '--with-selenium-server'
     

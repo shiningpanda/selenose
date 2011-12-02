@@ -2,8 +2,8 @@
 import os
 import ConfigParser
 
+from selenose.configs import *
 from selenose.server import Server
-from selenose.configs import ServerConfig, DriverConfig
 
 def create_section_file(dico):
     '''
@@ -32,12 +32,43 @@ def get_server(**kwargs):
     '''
     return Server(get_server_config(**kwargs))
 
-def get_base_env(cls, name, **kwargs):
-    return cls(name, [ create_section_file({'selenium-server': kwargs, }), ])
-
-
-def get_driver_config(**kwargs):
+def get_base_env(cls, name, section, options=None, server=None):
     '''
-    Get a server configuration.
+    Get a base environment.
     '''
-    return DriverConfig([ create_section_file(kwargs), ])
+    options = options or {}
+    parser = ConfigParser.RawConfigParser()
+    parser.add_section(section)
+    for option, value in options.items():
+        parser.set(section, option, value)
+    return cls(name, parser, section, server)
+
+def get_chrome_env(name='chrome', section='selenium-driver:chrome', options=None):
+    '''
+    Get a CHROME environment.
+    '''
+    return get_base_env(ChromeEnv, name, section, options)
+
+def get_firefox_env(name='firefox', section='selenium-driver:firefox', options=None):
+    '''
+    Get a FIREFOX environment.
+    '''
+    return get_base_env(FirefoxEnv, name, section, options)
+
+def get_ie_env(name='ie', section='selenium-driver:ie', options=None):
+    '''
+    Get an IE environment.
+    '''
+    return get_base_env(IeEnv, name, section, options)
+
+def get_remote_env(name='remote', section='selenium-driver:remote', options=None, server_options=None):
+    '''
+    Get a remote environment.
+    '''
+    return get_base_env(RemoteEnv, name, section, options, get_server_config(**(server_options or {})))
+
+def get_driver_config(dico):
+    '''
+    Get a driver configuration from a dictionary.
+    '''
+    return DriverConfig([ create_section_file(dico), ])

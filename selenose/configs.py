@@ -332,11 +332,11 @@ class DriverConfig(object):
         # For the remote driver, create an entry for each capabilities
         for capabilities in [ c.lower() for c in dir(DesiredCapabilities) if c == c.upper() ] :
             # Get the name of the section
-            section = self.get_section('%s-%s' % (env.key, capabilities))
+            section = self.get_section('remote-%s' % capabilities)
             # Add the section
             self.parser.add_section(section)
             # Set the driver value
-            self.parser.set(section, 'webdriver', env.key)
+            self.parser.set(section, 'webdriver', 'remote')
             # Set the capabilities
             self.parser.set(section, 'desired_capabilities', capabilities)
     
