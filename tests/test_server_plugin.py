@@ -5,13 +5,13 @@ from selenium import webdriver
 
 from nose.plugins import PluginTester
 
-from seleniumserver.plugin import Plugin
+from seleniumserver.plugins import SeleniumServerPlugin
 
 class PluginTestCase(PluginTester, unittest.TestCase):
     
     activate = '--with-selenium-server'
     
-    plugins = [ Plugin(), ]
+    plugins = [ SeleniumServerPlugin(), ]
 
     def test(self):
         assert 'OK' in self.output

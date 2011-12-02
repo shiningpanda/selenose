@@ -3,27 +3,29 @@ import unittest
 
 from selenium import webdriver
 
-from seleniumserver import server, libs
+from seleniumserver import libs
+
+from helpers import get_server
 
 class ServerTestCase(unittest.TestCase):
     
     def test_build_cmd_line_1(self):
-        self.assertEquals(['java', '-jar', libs.selenium_server_path(), ], server.build_cmd_line({}))
+        self.assertEquals(['java', '-jar', libs.selenium_server_path(), ], get_server().build_cmd_line())
 
     def test_build_cmd_line_2(self):
-        self.assertEquals(['-debug'], server.build_cmd_line(dict(debug='true'))[3:])
+        self.assertEquals(['-debug'], get_server(debug='true').build_cmd_line()[3:])
 
     def test_build_cmd_line_3(self):
-        self.assertEquals([], server.build_cmd_line(dict(debug='false'))[3:])
+        self.assertEquals([], get_server(debug='false').build_cmd_line()[3:])
 
     def test_build_cmd_line_4(self):
-        self.assertEquals(['-log', 'selenium-server.log', ], server.build_cmd_line(dict(log='selenium-server.log'))[3:])
+        self.assertEquals(['-log', 'selenium-server.log', ], get_server(log='selenium-server.log').build_cmd_line()[3:])
 
     def test_build_cmd_line_5(self):
-        self.assertEquals(['-userContentTransformation', 'a', 'b'], server.build_cmd_line(dict(userContentTransformation='a b'))[3:])
+        self.assertEquals(['-userContentTransformation', 'a', 'b'], get_server(userContentTransformation='a b').build_cmd_line()[3:])
 
     def test_start_stop(self):
-        s = server.SeleniumServer(dict(log='selenium-server.log'))
+        s = get_server(log='selenium-server.log')
         try:
             s.start()
             driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.FIREFOX)

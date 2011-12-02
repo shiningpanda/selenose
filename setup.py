@@ -2,17 +2,28 @@
 import os
 import sys
 import codecs
-import distribute_setup
-distribute_setup.use_setuptools()
+
+# Check if SETUPTOOLS is available. If not available, use setup script
+try: import setuptools
+except ImportError:
+    import distribute_setup
+    distribute_setup.use_setuptools()
+
 from setuptools import setup, find_packages
 
-from seleniumserver import libs, consts
+from seleniumserver import libs
 
-version = (0, 1)
+version = '2.14.0'
 
 folder = os.path.dirname(os.path.abspath(__file__))
 
 onsite = os.path.exists(os.path.join(folder, 'PKG-INFO'))
+
+if not onsite:
+    fd = codecs.open(os.path.join(folder, 'seleniumserver', '__version__.py'), 'w', 'utf-8')
+    fd.write("""#-*- coding: utf-8 -*-
+__version__ = %s
+""" % repr(version))
 
 flag = '--include'
 include = ( flag in sys.argv )
@@ -24,21 +35,14 @@ if not onsite and not include and 'bdist_egg' in sys.argv:
     sys.exit(1)
 
 if not include and 'sdist' in sys.argv:
-    libs.clean(True)
+    libs.clean(version, full=True)
 else:
-    libs.clean()
-    libs.download()
-
-if not onsite:
-    fd = codecs.open(os.path.join(folder, 'seleniumserver', '__version__.py'), 'w', 'utf-8')
-    fd.write("""#-*- coding: utf-8 -*-
-__version_info__ = %s
-__version__      = '.'.join(map(str, __version_info__))
-""" % repr(version))
+    libs.clean(version)
+    libs.download(version)
 
 setup(
     name = 'SeleniumServer',
-    version = '.'.join(map(str, version)),
+    version = version,
     description = 'Selenium server plugin for Nose',
     long_description = 'A plugin for nose/nosetests to start a Selenium server before running tests.',
     url = 'https://github.com/shiningpanda/seleniumserver/',
@@ -63,14 +67,15 @@ setup(
     install_requires = [
         'nose >= 1.1.2',
         'pexpect >= 2.4',
-        'selenium >= %s' % consts.SELENIUM_SERVER_VERSION,
+        'selenium >= %s' % version
     ],
     entry_points = {
         'nose.plugins.0.10': [
-            'selenium-server = seleniumserver.plugin:Plugin' ,
+            'selenium-server = seleniumserver.plugins:SeleniumServerPlugin',
+            'selenium-driver = seleniumserver.plugins:SeleniumDriverPlugin',
         ],
         'console_scripts': [
-            'selenium-server = seleniumserver.server:run',
+            'selenium-server = seleniumserver.server:_run',
         ],
     },
     test_suite = 'nose.collector',

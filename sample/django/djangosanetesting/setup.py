@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+
 import distribute_setup
 distribute_setup.use_setuptools()
 from setuptools import setup, find_packages
@@ -23,9 +24,8 @@ setup(
         'Django >= 1.3.1',
     ],
     setup_requires = [
-        'nose >= 1.1.2',
-        'djangosanetesting >= 0.5.11',
         'SeleniumServer',
+        'djangosanetesting >= 0.5.11',
         'CherryPy',
     ]
 )

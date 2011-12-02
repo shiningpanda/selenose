@@ -1,6 +1,24 @@
 [
     {
         "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2011-12-02 03:59:49",
+            "groups": [],
+            "user_permissions": [],
+            "password": "ssha$357e991e$0337a45df5f72360cc3de806dc3774d7289f7b69",
+            "email": "admin@shiningpanda.com",
+            "date_joined": "2011-12-02 03:59:49"
+        }
+    },
+    {
+        "pk": 1,
         "model": "polls.poll",
         "fields": {
             "pub_date": "2011-10-24 20:06:52",
