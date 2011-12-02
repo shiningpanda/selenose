@@ -6,7 +6,10 @@
 *.pyc
 *.log
 *.log.lck
+*.db
 .settings
 __version__.py
 nosetests.xml
 .coverage
+.tox
+tests/selenose.cfg

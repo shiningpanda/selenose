@@ -1,1 +1,1 @@
-See `online documentation <http://readthedocs.org/docs/seleniumserver/>`_.
+See `online documentation <http://readthedocs.org/docs/selenose/>`_.

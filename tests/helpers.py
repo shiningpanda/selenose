@@ -2,8 +2,8 @@
 import os
 import ConfigParser
 
-from seleniumserver.server import Server
-from seleniumserver.configs import ServerConfig, DriverConfig
+from selenose.server import Server
+from selenose.configs import ServerConfig, DriverConfig
 
 def create_section_file(dico):
     '''

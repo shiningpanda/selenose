@@ -8,8 +8,8 @@ import optparse
 
 import nose.config
 
-from seleniumserver import libs
-from seleniumserver.configs import ServerConfig
+from selenose import libs
+from selenose.configs import ServerConfig
 
 class Server(object):
     '''

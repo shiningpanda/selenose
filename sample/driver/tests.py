@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 
-from seleniumserver.cases import SeleniumTestCase
+from selenose.cases import SeleniumTestCase
 
 class TestCase(SeleniumTestCase):
     

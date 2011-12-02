@@ -5,7 +5,7 @@ from selenium import webdriver
 
 from nose.plugins import PluginTester
 
-from seleniumserver.plugins import SeleniumServerPlugin
+from selenose.plugins import SeleniumServerPlugin
 
 class PluginTestCase(PluginTester, unittest.TestCase):
     

@@ -11,7 +11,7 @@ except ImportError:
 
 from setuptools import setup, find_packages
 
-from seleniumserver import libs
+from selenose import libs
 
 version = '2.14.0'
 
@@ -20,7 +20,7 @@ folder = os.path.dirname(os.path.abspath(__file__))
 onsite = os.path.exists(os.path.join(folder, 'PKG-INFO'))
 
 if not onsite:
-    fd = codecs.open(os.path.join(folder, 'seleniumserver', '__version__.py'), 'w', 'utf-8')
+    fd = codecs.open(os.path.join(folder, 'selenose', '__version__.py'), 'w', 'utf-8')
     fd.write("""#-*- coding: utf-8 -*-
 __version__ = %s
 """ % repr(version))
@@ -41,12 +41,12 @@ else:
     libs.download(version)
 
 setup(
-    name = 'SeleniumServer',
+    name = 'selenose',
     version = version,
-    description = 'Selenium server plugin for Nose',
-    long_description = 'A plugin for nose/nosetests to start a Selenium server before running tests.',
-    url = 'https://github.com/shiningpanda/seleniumserver/',
-    download_url = 'http://pypi.python.org/pypi/seleniumserver/',
+    description = 'Selenium plugin for nose',
+    long_description = 'Selenium plugin for nose/nosetests.',
+    url = 'https://github.com/shiningpanda/selenose/',
+    download_url = 'http://pypi.python.org/pypi/selenose/',
     license = 'GNU Affero General Public License',
     author = 'ShiningPanda',
     author_email = 'developers@shiningpanda.com',
@@ -71,11 +71,11 @@ setup(
     ],
     entry_points = {
         'nose.plugins.0.10': [
-            'selenium-server = seleniumserver.plugins:SeleniumServerPlugin',
-            'selenium-driver = seleniumserver.plugins:SeleniumDriverPlugin',
+            'selenium-server = selenose.plugins:SeleniumServerPlugin',
+            'selenium-driver = selenose.plugins:SeleniumDriverPlugin',
         ],
         'console_scripts': [
-            'selenium-server = seleniumserver.server:_run',
+            'selenium-server = selenose.server:_run',
         ],
     },
     test_suite = 'nose.collector',

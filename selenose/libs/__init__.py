@@ -4,7 +4,7 @@ import sys
 import glob
 import urllib2
 
-from seleniumserver.__version__ import __version__
+from selenose.__version__ import __version__
 
 def selenium_server_bn(version):
     '''

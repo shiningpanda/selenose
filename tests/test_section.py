@@ -2,7 +2,7 @@
 import unittest
 import ConfigParser
 
-from seleniumserver.configs import Section
+from selenose.configs import Section
 
 class SectionTestCase(unittest.TestCase):
     

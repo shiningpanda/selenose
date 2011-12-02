@@ -3,7 +3,7 @@ import unittest
 
 from selenium import webdriver
 
-from seleniumserver import libs
+from selenose import libs
 
 from helpers import get_server
 

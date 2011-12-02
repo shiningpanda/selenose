@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 import unittest
 
-from seleniumserver.configs import filternone
+from selenose.configs import filternone
 
 class ToolsTestCase(unittest.TestCase):
     

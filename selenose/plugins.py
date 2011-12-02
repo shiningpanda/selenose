@@ -3,8 +3,8 @@ import urllib2
 
 from nose import plugins, config
 
-from seleniumserver.server import Server
-from seleniumserver.configs import ServerConfig, DriverConfig
+from selenose.server import Server
+from selenose.configs import ServerConfig, DriverConfig
 
 def all_config_files(options, conf):
     '''

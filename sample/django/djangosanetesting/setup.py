@@ -24,7 +24,7 @@ setup(
         'Django >= 1.3.1',
     ],
     setup_requires = [
-        'SeleniumServer',
+        'selenose',
         'djangosanetesting >= 0.5.11',
         'CherryPy',
     ]
