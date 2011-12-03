@@ -8,7 +8,7 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
-from selenium import __version__
+from selenose import __version__
 
 def selenium_server_bn(version):
     '''
