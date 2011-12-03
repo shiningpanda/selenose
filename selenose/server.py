@@ -8,6 +8,9 @@ import optparse
 import tempfile
 import subprocess
 
+try: input = raw_input
+except: pass
+
 import nose.config
 
 from selenose import libs
@@ -163,6 +166,6 @@ def run(argv):
         # Notify user
         sys.stdout.write('Quit the server with %s.\n' % quit_command)
         # Wait
-        raw_input()
+        input()
     # Stop server
     except KeyboardInterrupt: server.stop()
