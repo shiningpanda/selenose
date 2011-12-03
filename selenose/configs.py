@@ -2,7 +2,11 @@
 import os
 import uuid
 import tempfile
-import ConfigParser
+
+try: 
+    from configparser import RawConfigParser
+except ImportError:
+    from ConfigParser import RawConfigParser
 
 from selenium.webdriver import DesiredCapabilities, Chrome, Firefox, Ie, Remote
 
@@ -113,7 +117,7 @@ class ServerConfig(Section):
         # Section
         section = 'selenium-server'
         # Create a new parser
-        parser = ConfigParser.RawConfigParser()
+        parser = RawConfigParser()
         # Create the section anyway
         parser.add_section(section)
         # Read the provided files
@@ -328,7 +332,7 @@ class DriverConfig(object):
         Initialize the configuration with a list of files.
         '''
         # Create a new parser
-        self.parser = ConfigParser.RawConfigParser()
+        self.parser = RawConfigParser()
         # Load default configuration
         self.builtins()
         # Load the files

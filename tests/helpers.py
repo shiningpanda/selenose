@@ -1,6 +1,8 @@
 #-*- coding: utf-8 -*-
-import os
-import ConfigParser
+try: 
+    from configparser import RawConfigParser
+except ImportError:
+    from ConfigParser import RawConfigParser
 
 from selenose.configs import *
 from selenose.server import Server
@@ -9,7 +11,7 @@ def create_section_file(dico):
     '''
     Convert a dictionary of dictionary in section file.
     '''
-    parser = ConfigParser.RawConfigParser()
+    parser = RawConfigParser()
     for section, options in dico.items():
         parser.add_section(section)
         for option, value in options.items():
@@ -37,7 +39,7 @@ def get_base_env(cls, name, section, options=None, server=None):
     Get a base environment.
     '''
     options = options or {}
-    parser = ConfigParser.RawConfigParser()
+    parser = RawConfigParser()
     parser.add_section(section)
     for option, value in options.items():
         parser.set(section, option, value)

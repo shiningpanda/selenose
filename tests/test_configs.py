@@ -1,6 +1,10 @@
 #-*- coding: utf-8 -*-
 import unittest
-import ConfigParser
+
+try: 
+    from configparser import RawConfigParser
+except ImportError:
+    from ConfigParser import RawConfigParser
 
 import helpers
 
@@ -25,7 +29,7 @@ class ConfigsTestCase(unittest.TestCase):
 
     def test_section(self):
         # Create and fill a parser
-        parser = ConfigParser.RawConfigParser()
+        parser = RawConfigParser()
         parser.add_section('toto')
         parser.set('toto', 'tata', '1')
         parser.set('toto', 'tutu', 'true')
