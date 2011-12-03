@@ -63,7 +63,7 @@ def download(version, force=False):
         # Get the URL
         url = selenium_server_url(version)
         # Log
-        print >> sys.stderr, 'downloading %s from %s' % (os.path.basename(fp), url)
+        print('downloading %s from %s' % (os.path.basename(fp), url))
         # Get the target file descriptor
         fd = open(fp, 'wb')
         # Be able to delete the file if something does wrong
