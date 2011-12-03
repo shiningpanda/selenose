@@ -3,16 +3,6 @@ import os
 import sys
 import codecs
 
-# Check if SETUPTOOLS is available. If not available, use setup script
-try: import setuptools
-except ImportError:
-    import distribute_setup
-    distribute_setup.use_setuptools()
-
-from setuptools import setup, find_packages
-
-from selenose import libs
-
 version = '2.14.0'
 
 folder = os.path.dirname(os.path.abspath(__file__))
@@ -24,6 +14,8 @@ if not onsite:
     fd.write("""#-*- coding: utf-8 -*-
 __version__ = %s
 """ % repr(version))
+
+from selenose import libs
 
 flag = '--include'
 include = ( flag in sys.argv )
@@ -39,6 +31,13 @@ if not include and 'sdist' in sys.argv:
 else:
     libs.clean(version)
     libs.download(version)
+
+try: import setuptools
+except ImportError:
+    import distribute_setup
+    distribute_setup.use_setuptools()
+
+from setuptools import setup, find_packages
 
 setup(
     name = 'selenose',
