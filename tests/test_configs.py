@@ -4,8 +4,6 @@ import ConfigParser
 
 import helpers
 
-from selenium.webdriver import DesiredCapabilities
-
 from selenose.configs import *
 
 class ConfigsTestCase(unittest.TestCase):
@@ -13,15 +11,17 @@ class ConfigsTestCase(unittest.TestCase):
     def test_filternone(self):
         self.assertEquals(dict(a=0, c=''), filternone(a=0, b=None, c=''))
 
-    def test_server_config_custom_port(self):
-        c = helpers.get_server_config(port=1234)
+    def test_server_config_custom(self):
+        c = helpers.get_server_config(port=1234, log='server.log')
         self.assertEquals(1234, c.get_port())
         self.assertEquals('http://127.0.0.1:1234/wd/hub', c.get_command_executor())
+        self.assertEquals('server.log', c.get_log())
         
-    def test_server_config_default_port(self):
+    def test_server_config_default(self):
         c = helpers.get_server_config()
         self.assertEquals(4444, c.get_port())
         self.assertEquals('http://127.0.0.1:4444/wd/hub', c.get_command_executor())
+        self.assertNotEquals(None, c.get_log())
 
     def test_section(self):
         # Create and fill a parser

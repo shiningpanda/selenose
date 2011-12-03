@@ -66,7 +66,6 @@ setup(
     ],
     install_requires = [
         'nose >= 1.1.2',
-        'pexpect >= 2.4',
         'selenium >= %s' % version
     ],
     entry_points = {

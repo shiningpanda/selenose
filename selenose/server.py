@@ -1,15 +1,56 @@
 #-*- coding: utf-8 -*-
 import os
 import sys
+import time
 import shlex
-import signal
-import pexpect
 import optparse
+import subprocess
 
 import nose.config
 
 from selenose import libs
 from selenose.configs import ServerConfig
+
+def expect(log, pattern, timeout):
+    '''
+    Look for a string in a log file.
+    '''
+    # Get the deadline
+    deadline = time.time() + timeout
+    # Store the initial offset of the file
+    offset = 0
+    # If the file already exists, get its offset
+    if os.path.isfile(log):
+        # Open the file
+        fd = open(log)
+        # Go to the end of the file
+        fd.seek(0, 2)
+        # Store the final position
+        offset = fd.tell()
+        # Close the file
+        fd.close()
+    # Initialize the log content
+    body = ''
+    # Look for the string while deadline in not reached
+    while time.time() < deadline:
+        # Check if the log file exists
+        if os.path.isfile(log):
+            # Open the log file
+            fd = open(log)
+            # Go to the initial offset
+            fd.seek(offset)
+            # Read the end of the file
+            body = fd.read()
+            # Close the file
+            fd.close()
+            # Check if sting is in the read content
+            if pattern in body:
+                # If inside, we're successful
+                return True, body
+        # Else wait a little bit
+        time.sleep(1)
+    # Not found
+    return False, body
 
 class Server(object):
     '''
@@ -62,20 +103,16 @@ class Server(object):
         '''
         # Check that not already started
         assert self.process is None
-        # Get the command line
-        line = self.build_cmd_line()
         # Spawn the process
-        self.process = pexpect.spawn(command=line[0], args=line[1:])
-        # Be able to stop the server if pattern not found
-        try:
-            # Check when the server is started (wait at most 60 seconds)
-            self.process.expect('Started org.openqa.jetty.jetty.Server', timeout=60)
-        # Server failed to start
-        except pexpect.TIMEOUT as e:
+        self.process = subprocess.Popen(self.build_cmd_line())
+        # Check when the server is started (wait at most 60 seconds)
+        success, log = expect(self.config.get_log(), 'Started org.openqa.jetty.jetty.Server', timeout=60)
+        # Check if started
+        if not success:
             # Stop it
             self.stop()
             # And re raise the exception
-            raise e
+            raise IOError('failed to start server:\n%s' % log)
     
     def stop(self):
         '''
@@ -83,10 +120,14 @@ class Server(object):
         '''
         # Check if process started
         if self.process:
-            # Send stop signal
-            os.kill(self.process.pid, signal.SIGTERM)
-            # Wait for the end of the process
-            os.waitpid(self.process.pid, 0)
+            # Stop the server
+            self.process.terminate()
+            # Get the log file
+            log = self.config.get_log()
+            # Check if clean the log
+            if self.config.is_log_temp and os.path.isfile(log):
+                # Delete the log file
+                os.remove(log)
             # Reset
             self.process = None
 
