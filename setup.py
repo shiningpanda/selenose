@@ -1,19 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-import codecs
-
-version = '2.14.0'
 
 folder = os.path.dirname(os.path.abspath(__file__))
 
-onsite = os.path.exists(os.path.join(folder, 'PKG-INFO'))
+exec(open(os.path.join(folder, 'selenose', '__init__.py')).read())
 
-if not onsite:
-    fd = codecs.open(os.path.join(folder, 'selenose', '__version__.py'), 'w', 'utf-8')
-    fd.write("""#-*- coding: utf-8 -*-
-__version__ = %s
-""" % repr(version))
+onsite = os.path.exists(os.path.join(folder, 'PKG-INFO'))
 
 from selenose import libs
 
@@ -27,10 +20,10 @@ if not onsite and not include and 'bdist_egg' in sys.argv:
     sys.exit(1)
 
 if not include and 'sdist' in sys.argv:
-    libs.clean(version, full=True)
+    libs.clean(__version__, full=True)
 else:
-    libs.clean(version)
-    libs.download(version)
+    libs.clean(__version__)
+    libs.download(__version__)
 
 try: import setuptools
 except ImportError:
@@ -41,7 +34,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'selenose',
-    version = version,
+    version = __version__,
     description = 'Selenium plugin for nose',
     long_description = 'Selenium plugin for nose/nosetests.',
     url = 'https://github.com/shiningpanda/selenose/',
@@ -65,7 +58,7 @@ setup(
     ],
     install_requires = [
         'nose >= 1.1.2',
-        'selenium >= %s' % version
+        'selenium >= %s' % __version__
     ],
     entry_points = {
         'nose.plugins.0.10': [

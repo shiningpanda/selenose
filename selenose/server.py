@@ -2,8 +2,10 @@
 import os
 import sys
 import time
+import uuid
 import shlex
 import optparse
+import tempfile
 import subprocess
 
 import nose.config
@@ -11,42 +13,28 @@ import nose.config
 from selenose import libs
 from selenose.configs import ServerConfig
 
-def expect(log, pattern, timeout):
+def expect(fd, pattern, timeout):
     '''
     Look for a string in a log file.
     '''
-    # Get the deadline
-    deadline = time.time() + timeout
-    # Store the initial offset of the file
-    offset = 0
-    # If the file already exists, get its offset
-    if os.path.isfile(log):
-        # Open the file
-        fd = open(log)
-        # Go to the end of the file
-        fd.seek(0, 2)
-        # Store the final position
-        offset = fd.tell()
-        # Close the file
-        fd.close()
     # Initialize the log content
     body = ''
+    # Get the deadline
+    deadline = time.time() + timeout
     # Look for the string while deadline in not reached
     while time.time() < deadline:
-        # Check if the log file exists
-        if os.path.isfile(log):
-            # Open the log file
-            fd = open(log)
-            # Go to the initial offset
-            fd.seek(offset)
-            # Read the end of the file
-            body = fd.read()
-            # Close the file
-            fd.close()
-            # Check if sting is in the read content
-            if pattern in body:
-                # If inside, we're successful
-                return True, body
+        # Flush
+        fd.flush()
+        # Open the log file
+        log = open(fd.name)
+        # Read the end of the file
+        body = log.read()
+        # Close the file
+        log.close()
+        # Check if sting is in the read content
+        if pattern in body:
+            # If inside, we're successful
+            return True, body
         # Else wait a little bit
         time.sleep(1)
     # Not found
@@ -65,6 +53,8 @@ class Server(object):
         self.config = config
         # Store process pointer
         self.process = None
+        # Store log file descriptor
+        self.log = None
 
     def build_cmd_line(self):
         '''
@@ -101,18 +91,18 @@ class Server(object):
         '''
         Start the server.
         '''
-        # Check that not already started
-        assert self.process is None
+        # Store 
+        self.log = open(os.path.join(tempfile.gettempdir(), 'selenose_%s.log' % uuid.uuid4().hex), 'w')
         # Spawn the process
-        self.process = subprocess.Popen(self.build_cmd_line())
+        self.process = subprocess.Popen(self.build_cmd_line(), stdout=self.log, stderr=subprocess.STDOUT)
         # Check when the server is started (wait at most 60 seconds)
-        success, log = expect(self.config.get_log(), 'Started org.openqa.jetty.jetty.Server', timeout=60)
+        success, message = expect(self.log, 'Started org.openqa.jetty.jetty.Server', timeout=60)
         # Check if started
         if not success:
             # Stop it
             self.stop()
             # And re raise the exception
-            raise IOError('failed to start server:\n%s' % log)
+            raise AssertionError('failed to start server:\n%s' % message)
     
     def stop(self):
         '''
@@ -122,14 +112,18 @@ class Server(object):
         if self.process:
             # Stop the server
             self.process.terminate()
-            # Get the log file
-            log = self.config.get_log()
-            # Check if clean the log
-            if self.config.is_log_temp and os.path.isfile(log):
-                # Delete the log file
-                os.remove(log)
-            # Reset
+            # Reset process
             self.process = None
+            # Get the log file path
+            fp = self.log.name
+            # Close file descriptor
+            self.log.close()
+            # Reset the log file descriptor
+            self.log = None
+            # Check if clean the log
+            if os.path.isfile(fp):
+                # Delete the log file
+                os.remove(fp)
 
 def _run():
     '''

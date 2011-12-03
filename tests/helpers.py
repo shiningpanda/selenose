@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import os
 try: 
     from configparser import RawConfigParser
 except ImportError:

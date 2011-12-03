@@ -1,8 +1,4 @@
 #-*- coding: utf-8 -*-
-import os
-import uuid
-import tempfile
-
 try: 
     from configparser import RawConfigParser
 except ImportError:
@@ -114,28 +110,12 @@ class ServerConfig(Section):
         '''
         Initialize the configuration with a list of files.
         '''
-        # Section
-        section = 'selenium-server'
         # Create a new parser
         parser = RawConfigParser()
-        # Create the section anyway
-        parser.add_section(section)
         # Read the provided files
         parser.read(files)
         # Initialize the server section
-        super(ServerConfig, self).__init__(parser, section)
-        # Check if must provided a temporary log file
-        self.is_log_temp = not self.has('log')
-        # Create a temporary log file
-        if self.is_log_temp:
-            # Create and set the log file
-            self.parser.set(section, 'log', os.path.join(tempfile.gettempdir(), 'selenose_%s.log' % uuid.uuid4().hex))
-
-    def get_log(self):
-        '''
-        Get the log folder.
-        '''
-        return self.get('log')
+        super(ServerConfig, self).__init__(parser, 'selenium-server')
     
     def get_port(self):
         '''
