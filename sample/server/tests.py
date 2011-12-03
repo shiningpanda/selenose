@@ -21,7 +21,7 @@ class TestCase(unittest.TestCase):
             # Catch timeouts to display a nice message
             try:
                 # Wait till found search query in title
-                WebDriverWait(self.driver, 5).until(lambda driver : driver.title.lower().startswith('shiningpanda'))
+                WebDriverWait(driver, 5).until(lambda driver : driver.title.lower().startswith('shiningpanda'))
             # Not found, this test failed
             except TimeoutException: self.fail('Google search failed')
         # Quit after test
