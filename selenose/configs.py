@@ -342,8 +342,6 @@ class DriverConfig(object):
             self.parser.set(section, 'webdriver', 'remote')
             # Set the capabilities
             self.parser.set(section, 'desired_capabilities', capabilities)
-        import pdb
-        pdb.set_trace()
     
     def get_section(self, name):
         '''
@@ -370,6 +368,4 @@ class DriverConfig(object):
         # Create a new instance for the environment
         return env(name, self.parser, section, self.server)
 
-DriverConfig([])
-    
                 
