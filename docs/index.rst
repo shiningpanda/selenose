@@ -8,10 +8,10 @@ Selenose
 
 Selenose provides a set of `Selenium <http://seleniumhq.org/>`_ related plugins for `nose <http://code.google.com/p/python-nose/>`_ developed by `ShiningPanda <https://www.shiningpanda.com>`_:
 
-* The :ref:`selenium-server-plugin` starts a `Selenium Server <http://seleniumhq.org/docs/05_selenium_rc.html#selenium-server>`_ before running tests, and stops it at the end of the tests.
-* The :ref:`selenium-driver-plugin` provides a `Selenium WebDriver <http://seleniumhq.org/docs/03_webdriver.html>`_ to the tests.
+* :ref:`selenium-server-plugin` starts a `Selenium Server <http://seleniumhq.org/docs/05_selenium_rc.html#selenium-server>`_ before running tests, and stops it at the end of the tests.
+* :ref:`selenium-driver-plugin` provides a `Selenium WebDriver <http://seleniumhq.org/docs/03_webdriver.html>`_ to the tests.
 
-The use of these plugins is detailed bellow, but let's have a look on :ref:`installation process <installation>` first.
+The use of these plugins is detailed bellow, but let's have a look on the :ref:`installation process <installation>` first.
 
 .. _installation:
 
@@ -37,7 +37,7 @@ Or `pip <http://pypi.python.org/pypi/pip/>`_:
 
     $ pip install selenose
 
-It can take time as Selenium server's jar is downloaded on the fly during installation.
+It can take a while as Selenium server's jar is downloaded on the fly during installation.
 
 Python 3
 ^^^^^^^^
@@ -59,13 +59,13 @@ Selenium Server Plugin
 
 This plugin starts a Selenium Server before running tests, and stops it at the end of the tests.
 
-To enable it, add ``--with-selenium-server`` on the nose command line:
+To enable it, add ``--with-selenium-server`` to the nose command line:
 
 .. code-block:: bash
 
     $ nose --with-selenium-server
 
-You can also add the ``with-selenium-server`` option under the ``nosetests`` section in a configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``):
+You can also add the ``with-selenium-server`` option under the ``nosetests`` section of the configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``):
 
 .. code-block:: cfg
 
@@ -79,20 +79,20 @@ Options for Selenium Server can be found by `downloading its jar <http://seleniu
     $ java -jar /path/to/seleniumserver/libs/selenium-server-standalone-X.X.X.jar -h
    
 
-Most common ones are:
+Most common options are:
 
 * ``-port <nnnn>``: the port number the Selenium Server should use (default 4444),
 * ``-log <logFileName>``: writes lots of debug information out to a log file,
 * ``-debug``: enable debug mode.
 
-To set server options, add a ``selenium-server`` section in a configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``).
+To set the server options, add a ``selenium-server`` section to the configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``).
 Option names are obtained by removing the initial dash, for instance to run:
 
 .. code-block:: bash
 
     $ java -jar selenium-server-standalone-X.X.X.jar -debug -log selenium-server.log 
 
-Add following options in configuration:
+Add the following options to the configuration:
 
 .. code-block:: cfg
 
@@ -151,14 +151,14 @@ To enable this plugin, add ``--with-selenium-driver`` on the nose command line:
 
     $ nose --with-selenium-driver
 
-You can also add the ``with-selenium-driver`` option under the ``nosetests`` section in a configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``):
+You can also add the ``with-selenium-driver`` option under the ``nosetests`` section to the configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``):
 
 .. code-block:: cfg
 
     [nosetests]
     with-selenium-driver = true
 
-But enabling it is not enought, a :ref:`web-driver-environment` is also required.
+But enabling it is not enough, a :ref:`web-driver-environment` is also required.
 
 .. _web-driver-environment:
 
@@ -167,7 +167,7 @@ Web Driver environment
 
 An environment declares all the necessary parameters to create a new Web Driver.
 
-To create a new environment ``sample``, add a ``selenium-driver:sample`` section in a configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``) with at least a ``webdriver`` option:
+To create a new environment ``sample``, add a ``selenium-driver:sample`` section to the configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``) with at least a ``webdriver`` option:
 
 .. code-block:: cfg
 
@@ -176,16 +176,16 @@ To create a new environment ``sample``, add a ``selenium-driver:sample`` section
 
 This ``webdriver`` option defines the Web Driver to use. Here are the available values:
 
-* ``chrome`` for `Chrome <https://www.google.com/chrome>`_, allowing following options in configuration:
+* ``chrome`` for `Chrome <https://www.google.com/chrome>`_, allowing the following options in configuration:
     * ``executable_path`` (optional): path to ``chromedriver`` executable,
     * ``port`` (optional),
     * ``desired_capabilities`` (optional), 
-* ``firefox`` for `Firefox <http://www.mozilla.org/firefox/>`_, allowing following options in configuration:
+* ``firefox`` for `Firefox <http://www.mozilla.org/firefox/>`_, allowing the following options in configuration:
     * ``timeout`` (optional),
-* ``ie`` for `Internet Explorer <http://windows.microsoft.com/en-US/internet-explorer/products/ie/home>`_, allowing following options in configuration:
+* ``ie`` for `Internet Explorer <http://windows.microsoft.com/en-US/internet-explorer/products/ie/home>`_, allowing the following options in configuration:
     * ``port`` (optional),
     * ``timeout`` (optional),
-* ``remote`` to delegate to a Selenium Server (started by :ref:`selenium-server-plugin`?), allowing following options in configuration:
+* ``remote`` to delegate to a Selenium Server (started by :ref:`selenium-server-plugin`?), allowing the following options in configuration:
     * ``command_executor`` (required): url of the server (``http://127.0.0.1:4444/wd/hub`` by default),
     * ``desired_capabilities (required): the desired browser, it could be the lower case field name of ``selenium.webdriver.DesiredCapabilities`` such as ``firefox``, ``htmlunitwithjs``... or a comma separated key/value list such as ``browserName=firefox,platform=ANY``.
 
@@ -195,7 +195,7 @@ To enable an environment, add ``--selenium-driver`` on the nose command line:
 
     $ nose --with-selenium-driver --selenium-driver=sample
 
-You can also add the ``selenium-driver`` option under the ``nosetests`` section in a configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``):
+You can also add the ``selenium-driver`` option under the ``nosetests`` section to the configuration file (``setup.cfg``, ``~/.noserc`` or ``~/nose.cfg``):
 
 .. code-block:: cfg
 
@@ -206,7 +206,7 @@ You can also add the ``selenium-driver`` option under the ``nosetests`` section 
     [selenium-driver:sample]
     webdriver = firefox
 
-Selenose also provides a set a predefined but overidable environments:
+Selenose also provides a set of predefined but overridable environments:
 
 .. code-block:: cfg
 
@@ -258,7 +258,7 @@ The Web Driver is directly available with ``self.driver`` and there is no need t
 Combining Server & Driver
 -------------------------
 
-To combine Selenium Server and Driver plugins, just enable them both: the ``command_executor`` option for a ``remote`` Web Driver will directly have the correct value to reach the started Selenium Server.
+To combine a Selenium Server and a Driver plugin, just enable them both: the ``command_executor`` option of the ``remote`` Web Driver will know the correct value to reach the Selenium Server.
 
 Tips
 ----
