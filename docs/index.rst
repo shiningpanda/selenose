@@ -9,7 +9,7 @@ Selenose
 Selenose provides a set of `Selenium <http://seleniumhq.org/>`_ related plugins for `nose <http://code.google.com/p/python-nose/>`_ developed by `ShiningPanda <https://www.shiningpanda.com>`_:
 
 * :ref:`selenium-server-plugin` starts a `Selenium Server <http://seleniumhq.org/docs/05_selenium_rc.html#selenium-server>`_ before running tests, and stops it at the end of the tests.
-* :ref:`selenium-driver-plugin` provides a `Selenium WebDriver <http://seleniumhq.org/docs/03_webdriver.html>`_ to the tests.
+* :ref:`selenium-driver-plugin` provides a `Selenium Web Driver <http://seleniumhq.org/docs/03_webdriver.html>`_ to the tests.
 
 The use of these plugins is detailed bellow, but let's have a look on the :ref:`installation process <installation>` first.
 
@@ -100,7 +100,7 @@ Add the following options to the configuration:
     debug = true
     log = selenium-server.log
 
-In your test, just create a new ``Remote`` WebDriver calling the server and that's it:
+In your test, just create a new ``Remote`` Web Driver calling the server and that's it:
 
 .. code-block:: python
 

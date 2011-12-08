@@ -8,7 +8,7 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
-from selenose import __version__
+from selenose import __selenium_version__
 
 def selenium_server_bn(version):
     '''
@@ -22,7 +22,7 @@ def selenium_server_url(version):
     '''
     return 'http://selenium.googlecode.com/files/%s' % selenium_server_bn(version)
 
-def selenium_server_path(version=__version__):
+def selenium_server_path(version=__selenium_version__):
     '''
     Get the SELENIUM server jar path.
     '''

@@ -20,10 +20,10 @@ if not onsite and not include and 'bdist_egg' in sys.argv:
     sys.exit(1)
 
 if not include and 'sdist' in sys.argv:
-    libs.clean(__version__, full=True)
+    libs.clean(__selenium_version__, full=True)
 else:
-    libs.clean(__version__)
-    libs.download(__version__)
+    libs.clean(__selenium_version__)
+    libs.download(__selenium_version__)
 
 try: import setuptools
 except ImportError:
@@ -58,7 +58,7 @@ setup(
     ],
     install_requires = [
         'nose >= 1.1.2',
-        'selenium >= %s' % __version__
+        'selenium >= %s' % __selenium_version__,
     ],
     entry_points = {
         'nose.plugins.0.10': [
