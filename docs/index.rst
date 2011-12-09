@@ -18,11 +18,6 @@ The use of these plugins is detailed bellow, but let's have a look on the :ref:`
 Installation
 ------------
 
-.. _installation-python-2:
-
-Python 2
-^^^^^^^^
-
 On most UNIX-like systems, you’ll probably need to run these commands as root or using ``sudo``.
 
 Install selenose using `setuptools <http://pypi.python.org/pypi/setuptools/>`_/`distribute <http://pypi.python.org/pypi/distribute/>`_:
@@ -38,21 +33,6 @@ Or `pip <http://pypi.python.org/pypi/pip/>`_:
     $ pip install selenose
 
 It can take a while as Selenium server's jar is downloaded on the fly during installation.
-
-Python 3
-^^^^^^^^
-
-Unfortunately, `Python bindings for Selenium <http://pypi.python.org/pypi/selenium>`_ (a dependence of selenose) requires `RDFLib <http://www.rdflib.net/>`_ which is not Python 3 compliant.
-
-However, RDFLib is only used when adding extensions to `Firefox <http://www.mozilla.org/firefox/>`_. If you do not need this feature, you can first install a fake RDFLib module:
-
-.. code-block:: bash
-
-    $ pip install https://raw.github.com/shiningpanda/selenose/master/python3wos/rdflib-3.1.0/dist/rdflib-3.1.0.tar.gz
-
-Then install selenose :ref:`as ususal <installation-python-2>`.
-
-.. _selenium-server-plugin:
 
 Selenium Server Plugin
 ----------------------
