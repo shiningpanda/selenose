@@ -85,6 +85,7 @@ class ServerConfig(Section):
     cardinalities = dict(
         port                        = 1,
         timeout                     = 1,
+        browserTimeout              = 1,
         interactive                 = 0,
         singleWindow                = 0,
         profilesLocation            = 1,

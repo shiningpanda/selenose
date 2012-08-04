@@ -35,8 +35,8 @@ from setuptools import setup, find_packages
 setup(
     name = 'selenose',
     version = __version__,
-    description = 'Selenium plugin for nose',
-    long_description = 'Selenium plugin for nose/nosetests.',
+    description = 'Selenium plugin for nose and django-jenkins',
+    long_description = 'Selenium plugin for nose/nosetests and django-jenkins.',
     url = 'https://github.com/shiningpanda/selenose/',
     download_url = 'http://pypi.python.org/pypi/selenose/',
     license = 'GNU Affero General Public License',

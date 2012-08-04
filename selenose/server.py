@@ -99,7 +99,7 @@ class Server(object):
         # Spawn the process
         self.process = subprocess.Popen(self.build_cmd_line(), stdout=self.log, stderr=subprocess.STDOUT)
         # Check when the server is started (wait at most 60 seconds)
-        success, message = expect(self.log, 'Started org.openqa.jetty.jetty.Server', timeout=60)
+        success, message = expect(self.log, 'Started org.openqa.jetty.jetty.Server', timeout=120)
         # Check if started
         if not success:
             # Stop it

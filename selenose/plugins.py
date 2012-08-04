@@ -1,9 +1,8 @@
 #-*- coding: utf-8 -*-
 try:
     from urllib.error import URLError
-    from urllib.request import urlopen
 except ImportError:
-    from urllib2 import URLError, urlopen
+    from urllib2 import URLError
 
 from nose import plugins, config
 
@@ -75,7 +74,7 @@ class SeleniumDriverPlugin(plugins.Plugin):
         if self.enabled:
             # Check if an environment is provided
             if not options.env:
-                # Not
+                # Not provided, raise
                 raise ValueError('please provide a driver environment')
             # Get the environment
             self.env = DriverConfig(all_config_files(options, conf)).getenv(options.env)
