@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
+
 from django_jenkins.tasks import BaseTask
 
 from selenose.server import Server
 from selenose.configs import ServerConfig
-from selenose.tasks import all_config_files
+from selenose.tasks import all_config_files, make_config_option
 
 class Task(BaseTask):
     '''
     Start a SELENIUM server before the tests.
     '''
+
+    # Add option for configuration file only if not set by the driver task.
+    option_list = [] if 'selenose.tasks.selenium_driver' in getattr(settings, 'JENKINS_TASKS', []) else [ make_config_option() ]
 
     def __init__(self, test_labels, options):
         '''

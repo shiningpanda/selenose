@@ -4,7 +4,7 @@ from optparse import make_option
 from django_jenkins.tasks import BaseTask
 
 from selenose.configs import DriverConfig
-from selenose.tasks import all_config_files
+from selenose.tasks import all_config_files, make_config_option
 
 # Store the SELENIUM environment configuration
 env = None
@@ -13,14 +13,8 @@ class Task(BaseTask):
     '''
     Create a SELENIUM driver.
     '''
-    option_list = BaseTask.option_list + [
-        make_option(
-            '--selenose-config',
-            action='append',
-            default=[],
-            dest='selenose_configs',
-            help='Load selenose configuration from config file(s). May be specified multiple times; in that case, all config files will be loaded and combined.',
-        ),
+    option_list = [
+        make_config_option(),
         make_option(
             '--selenium-driver',
             action='store',

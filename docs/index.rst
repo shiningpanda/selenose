@@ -6,12 +6,9 @@
 Selenose
 ========
 
-Selenose provides a set of `Selenium <http://seleniumhq.org/>`_ related plugins for `nose <http://code.google.com/p/python-nose/>`_ developed by `ShiningPanda <https://www.shiningpanda.com>`_:
+Selenose provides a set of `Selenium <http://seleniumhq.org/>`_ related plugins/tasks for `nose <http://code.google.com/p/python-nose/>`_/`django-jenkins <http://pypi.python.org/pypi/django-jenkins/>`_ developed by `ShiningPanda <https://www.shiningpanda.com>`_.
 
-* :ref:`selenium-server-plugin` starts a `Selenium Server <http://seleniumhq.org/docs/05_selenium_rc.html#selenium-server>`_ before running tests, and stops it at the end of the tests.
-* :ref:`selenium-driver-plugin` provides a `Selenium Web Driver <http://seleniumhq.org/docs/03_webdriver.html>`_ to the tests.
-
-The use of these plugins is detailed bellow, but let's have a look on the :ref:`installation process <installation>` first.
+The use of these plugins/tasks is detailed bellow, but let's have a look on the :ref:`installation process <installation>` first.
 
 .. _installation:
 
@@ -34,8 +31,20 @@ Or `pip <http://pypi.python.org/pypi/pip/>`_:
 
 It can take a while as Selenium server's jar is downloaded on the fly during installation.
 
+If you plan to use `django-jenkins <http://pypi.python.org/pypi/django-jenkins/>`_, note that Django 1.4+ is required (`support for in-browser testing frameworks <https://docs.djangoproject.com/en/dev/releases/1.4/#support-for-in-browser-testing-frameworks>`_).
+
+Nose
+----
+
+Selenose provides two `Selenium <http://seleniumhq.org/>`_ related plugins for `nose <http://code.google.com/p/python-nose/>`_:
+
+* :ref:`selenium-server-plugin` starts a `Selenium Server <http://seleniumhq.org/docs/05_selenium_rc.html#selenium-server>`_ before running tests, and stops it at the end of the tests.
+* :ref:`selenium-driver-plugin` provides a `Selenium Web Driver <http://seleniumhq.org/docs/03_webdriver.html>`_ to the tests.
+
+.. _selenium-server-plugin:
+
 Selenium Server Plugin
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 This plugin starts a Selenium Server before running tests, and stops it at the end of the tests.
 
@@ -105,12 +114,12 @@ In your test, just create a new ``Remote`` Web Driver calling the server and tha
 .. _selenium-driver-plugin:
 
 Selenium Driver Plugin
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 This plugin provides a Selenium Web Driver to Selenium tests.
 
 Flag Selenium tests
-^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++
 
 This plugin only provides Web Drivers to Selenium test. To declare a Selenium test:
 
@@ -123,7 +132,7 @@ This plugin only provides Web Drivers to Selenium test. To declare a Selenium te
         enable_selenium_driver = True
 
 Enable the plugin
-^^^^^^^^^^^^^^^^^
++++++++++++++++++
 
 To enable this plugin, add ``--with-selenium-driver`` on the nose command line:
 
@@ -143,7 +152,7 @@ But enabling it is not enough, a :ref:`web-driver-environment` is also required.
 .. _web-driver-environment:
 
 Web Driver environment
-^^^^^^^^^^^^^^^^^^^^^^
+++++++++++++++++++++++
 
 An environment declares all the necessary parameters to create a new Web Driver.
 
@@ -216,7 +225,7 @@ Selenose also provides a set of predefined but overridable environments:
     desired_capabilities = ...
 
 Writing tests
-^^^^^^^^^^^^^
++++++++++++++
 
 The Web Driver is directly available with ``self.driver`` and there is no need to cleanup after use, selenose will do it for you:
 
@@ -236,9 +245,172 @@ The Web Driver is directly available with ``self.driver`` and there is no need t
         nose.main()
 
 Combining Server & Driver
--------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To combine a Selenium Server and a Driver plugin, just enable them both: the ``command_executor`` option of the ``remote`` Web Driver will know the correct value to reach the Selenium Server.
+To combine a Selenium Server and a Selenium Driver plugin, just enable them both: the ``command_executor`` option of the ``remote`` Web Driver will know the correct value to reach the Selenium Server.
+
+Django Jenkins
+--------------
+
+Selenose provides two `Selenium <http://seleniumhq.org/>`_ related tasks for `django-jenkins <http://pypi.python.org/pypi/django-jenkins/>`_:
+
+* :ref:`selenium-server-task` starts a `Selenium Server <http://seleniumhq.org/docs/05_selenium_rc.html#selenium-server>`_ before running tests, and stops it at the end of the tests.
+* :ref:`selenium-driver-task` provides a `Selenium Web Driver <http://seleniumhq.org/docs/03_webdriver.html>`_ to the tests.
+
+Note that Django 1.4+ `support for in-browser testing frameworks <https://docs.djangoproject.com/en/dev/releases/1.4/#support-for-in-browser-testing-frameworks>`_ is required.
+
+.. _selenium-server-task:
+
+Selenium Server Task
+^^^^^^^^^^^^^^^^^^^^
+
+This task starts a Selenium Server before running tests, and stops it at the end of the tests.
+
+To enable it, edit your ``settings.py`` and append ``selenose.tasks.selenium_server`` to ``JENKINS_TASKS``:
+
+.. code:: python
+    
+    JENKINS_TASKS = [
+        # Other tasks...
+        'selenose.tasks.selenium_server',
+    ]
+
+If this setting does not exist yet, do not forget to create it with the default tasks:
+
+.. code:: python
+    
+    JENKINS_TASKS = [
+        'django_jenkins.tasks.run_pylint',
+        'django_jenkins.tasks.with_coverage',
+        'django_jenkins.tasks.django_tests',
+        'selenose.tasks.selenium_server',
+    ]
+
+Options for Selenium Server are the same than for the nose :ref:`selenium-server-plugin`.
+Set them in a ``setup.cfg`` located in the current working directory, for instance:
+
+.. code-block:: cfg
+
+    [selenium-server]
+    debug = true
+    log = selenium-server.log
+
+You can also specify the path to the configuration file with the ``--selenose-config`` option on the ``manage.py jenkins`` command line:
+
+.. code:: bash
+
+    $ python manage.py jenkins --help
+    [...]
+      selenose.tasks.selenium_server:
+        --selenose-config=SELENOSE_CONFIGS
+                            Load selenose configuration from config file(s). May
+                            be specified multiple times; in that case, all config
+                            files will be loaded and combined.
+
+In your tests, just create a new ``Remote`` Web Driver calling the server and that's it:
+
+.. code-block:: python
+
+    from django.test import LiveServerTestCase
+
+    from selenium import webdriver
+
+    class TestCase(LiveServerTestCase):
+
+        @classmethod
+        def setUpClass(cls):
+            cls.driver = webdriver.Remote(desired_capabilities=webdriver.DesiredCapabilities.FIREFOX)
+            super(BaseTestCase, cls).setUpClass()
+
+        @classmethod
+        def tearDownClass(cls):
+            super(BaseTestCase, cls).tearDownClass()
+            cls.driver.quit()
+
+        def test(self):
+            driver.get(self.live_server_url)
+
+.. _selenium-driver-task:
+
+Selenium Driver Task
+^^^^^^^^^^^^^^^^^^^^
+
+This task provides a Selenium Web Driver to Selenium tests.
+
+To enable it, edit your ``settings.py`` and append ``selenose.tasks.selenium_driver`` to ``JENKINS_TASKS``:
+
+.. code:: python
+    
+    JENKINS_TASKS = [
+        # Other tasks...
+        'selenose.tasks.selenium_server',
+    ]
+
+If this setting does not exist yet, do not forget to create it with the default tasks:
+
+.. code:: python
+    
+    JENKINS_TASKS = [
+        'django_jenkins.tasks.run_pylint',
+        'django_jenkins.tasks.with_coverage',
+        'django_jenkins.tasks.django_tests',
+        'selenose.tasks.selenium_driver',
+    ]
+
+But enabling this task is not enough, a :ref:`web-driver-environment` is also required.
+
+The :ref:`web-driver-environment` are defined in a ``setup.cfg`` located in the current working directory, for instance:
+
+.. code-block:: cfg
+
+    [selenium-driver:sample]
+    webdriver = firefox
+
+You can also specify the path to the configuration file containing the environments with the ``--selenose-config`` option on the ``manage.py jenkins`` command line:
+
+.. code:: bash
+
+    $ python manage.py jenkins --help
+    [...]
+      selenose.tasks.selenium_driver:
+        --selenose-config=SELENOSE_CONFIGS
+                            Load selenose configuration from config file(s). May
+                            be specified multiple times; in that case, all config
+                            files will be loaded and combined.
+        --selenium-driver=SELENIUM_DRIVER
+                            Enable the provided environment.
+
+To enable an environment, use the ``--selenium-driver`` option on the ``manage.py jenkins`` command line:
+
+.. code:: bash
+
+    $ python manage.py jenkins --selenium-driver=sample
+
+Then the Web Driver is directly available in you tests with ``self.driver`` and there is no need to cleanup after use, selenose will do it for you:
+
+.. code-block:: python
+
+    from selenose.cases import LiveServerTestCase
+    
+    class TestCase(LiveServerTestCase):
+        
+        def test(self):
+            self.driver.get(self.live_server_url)
+            # Your test here...
+
+Combining Server & Driver
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To combine a Selenium Server and a Selenium Driver task, just enable them both in the settings: the ``command_executor`` option of the ``remote`` Web Driver will know the correct value to reach the Selenium Server.
+
+.. code:: python
+    
+    JENKINS_TASKS = [
+        # Other tasks...
+        'selenose.tasks.selenium_server',
+        'selenose.tasks.selenium_driver',
+    ]
+
 
 Tips
 ----
@@ -253,4 +425,6 @@ When writing tests, it's convenient to start a Selenium Server manually to reduc
     Quit the server with CONTROL-C.
 
 Then type ``CONTROL-C`` or ``CTRL-BREAK`` to stop the server.
+
+In this case, run your tests neither with the :ref:`selenium-server-plugin` not with the :ref:`selenium-server-task`.
 
