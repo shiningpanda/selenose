@@ -176,7 +176,7 @@ This ``webdriver`` option defines the Web Driver to use. Here are the available 
     * ``timeout`` (optional),
 * ``remote`` to delegate to a Selenium Server (started by :ref:`selenium-server-plugin`?), allowing the following options in configuration:
     * ``command_executor`` (required): url of the server (``http://127.0.0.1:4444/wd/hub`` by default),
-    * ``desired_capabilities (required): the desired browser, it could be the lower case field name of ``selenium.webdriver.DesiredCapabilities`` such as ``firefox``, ``htmlunitwithjs``... or a comma separated key/value list such as ``browserName=firefox,platform=ANY``.
+    * ``desired_capabilities`` (required): the desired browser, it could be the lower case field name of ``selenium.webdriver.DesiredCapabilities`` such as ``firefox``, ``htmlunitwithjs``... or a comma separated key/value list such as ``browserName=firefox,platform=ANY``.
 
 To enable an environment, add ``--selenium-driver`` on the nose command line:
 
