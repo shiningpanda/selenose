@@ -11,15 +11,7 @@ def filternone(**kwargs):
     If a value is not defined, pop it.
     '''
     # Get the copy of the dictionary
-    copy = dict(kwargs)
-    # For each item, check that a value is provided
-    for key, value in kwargs.items():
-        # Check that value is provided
-        if value is None:
-            # If not provided, pop it
-            copy.pop(key)
-    # Return the cleaned dictionary
-    return copy
+    return {key: value for key, value in kwargs.items() if key is not None}
 
 class Section(object):
     '''
